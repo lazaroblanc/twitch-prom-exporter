@@ -35,7 +35,7 @@ server.listen(PORT, (err) => {
 async function getMetrics() {
 
     let liveStreams = await getLiveStreams(GAME_ID, LANGUAGE)
-    let liveUsers = liveStreams.map((item) => { return { username: item.user_login } })
+    let liveUsers = liveStreams.map((item) => { return { username: item.user_login, viewers: item.viewer_count } })
     liveUsers = liveUsers.sort((a, b) => {
         return a.username.localeCompare(b.username);
     })
@@ -46,7 +46,7 @@ async function getMetrics() {
     let metric = `# TYPE ${metricName} gauge\n`;
 
     for (const user of liveUsers) {
-        metric += `twitch_livestream{user="${user.username}"} 1\n`;
+        metric += `twitch_livestream{user="${user.username}"} ${user.viewers}\n`;
     }
 
     return metric
