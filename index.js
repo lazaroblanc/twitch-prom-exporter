@@ -36,16 +36,26 @@ async function getMetrics() {
 
     let liveStreams = await getLiveStreams(GAME_ID, LANGUAGE)
     let liveUsers = liveStreams.map((item) => { return { username: item.user_login, viewers: item.viewer_count } })
-    liveUsers = liveUsers.sort((a, b) => {
+
+    // De-dedupe streams
+    let uniqueLiveUsers = liveUsers.reduce((accumulator, current) => {
+        if (!accumulator.find((item) => item.username === current.username)) {
+            accumulator.push(current);
+        }
+        return accumulator;
+    }, []);
+
+    // Sort live users alphabetically
+    uniqueLiveUsers = uniqueLiveUsers.sort((a, b) => {
         return a.username.localeCompare(b.username);
     })
-    console.log(liveUsers)
-    console.log("Number of people live:", liveUsers.length)
+    console.log(uniqueLiveUsers)
+    console.log("Number of people live:", uniqueLiveUsers.length)
 
     let metricName = `twitch_livestream`
     let metric = `# TYPE ${metricName} gauge\n`;
 
-    for (const user of liveUsers) {
+    for (const user of uniqueLiveUsers) {
         metric += `twitch_livestream{user="${user.username}"} ${user.viewers}\n`;
     }
 

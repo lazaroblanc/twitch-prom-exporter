@@ -68,5 +68,5 @@ export async function getLiveStreams(gameId, language) {
 
     } while (cursor)
 
-    return [...new Set(streams)];
+    return streams;
 }
