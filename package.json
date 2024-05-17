@@ -1,0 +1,21 @@
+{
+  "name": "twitch-prom-exporter",
+  "version": "1.0.0",
+  "description": "A Prometheus exporter for the Twitch API",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "twitch",
+    "api",
+    "prometheus",
+    "exporter"
+  ],
+  "author": "Lázaro Blanc",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "dotenv": "^16.4.5"
+  }
+}
